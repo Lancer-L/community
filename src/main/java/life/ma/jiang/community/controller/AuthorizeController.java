@@ -60,7 +60,7 @@ public class AuthorizeController {
                 token = user.getToken();
             //登录成功 写cookie 和 session
             //cookie 在 response 里面
-            response.addCookie(new Cookie("token",token));
+            response.addCookie(new Cookie("tokdden",token));
             return  "redirect:/";//重定向到 index页面
         }else{
             //登录失败 重新登录
