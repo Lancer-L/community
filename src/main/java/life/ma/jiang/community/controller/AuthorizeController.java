@@ -11,7 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 @Controller
@@ -32,7 +34,8 @@ public class AuthorizeController {
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
-                           HttpServletRequest request){
+                           HttpServletRequest request,
+                           HttpServletResponse response){
         AccessTokenDTO tokenDTO = new AccessTokenDTO();
         tokenDTO.setClient_id(clientId);
         tokenDTO.setClient_secret(clientSecret);
@@ -42,15 +45,22 @@ public class AuthorizeController {
         String accessToken = gitHubProvider.getAccessToken(tokenDTO);
         GithubUserDTO githubuser = gitHubProvider.getUser(accessToken);
         if(githubuser != null){
-            User user = new User();
-            user.setAccountId(String.valueOf(githubuser.getId()));
-            user.setName(githubuser.getName());
-            user.setToken(UUID.randomUUID().toString()); // 以UUID的形式设置token
-            user.setGmtCreate(System.currentTimeMillis());
-            user.setGmtModified(user.getGmtCreate());
-            userMapper.insertUser(user);
+            User user = userMapper.findUserByAccountId(String.valueOf(githubuser.getId()));
+            String token ="";
+            if(user==null){
+                token = UUID.randomUUID().toString();
+                user = new User();
+                user.setAccountId(String.valueOf(githubuser.getId()));
+                user.setName(githubuser.getName());
+                user.setToken(token); // 以UUID的形式设置token
+                user.setGmtCreate(System.currentTimeMillis());
+                user.setGmtModified(user.getGmtCreate());
+                userMapper.insertUser(user);
+            }else
+                token = user.getToken();
             //登录成功 写cookie 和 session
-            request.getSession().setAttribute("user",user);
+            //cookie 在 response 里面
+            response.addCookie(new Cookie("token",token));
             return  "redirect:/";//重定向到 index页面
         }else{
             //登录失败 重新登录
