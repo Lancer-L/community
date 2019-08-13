@@ -2,6 +2,8 @@ package life.ma.jiang.community.controller;
 
 import life.ma.jiang.community.dto.AccessTokenDTO;
 import life.ma.jiang.community.dto.GithubUserDTO;
+import life.ma.jiang.community.mapper.UserMapper;
+import life.ma.jiang.community.model.User;
 import life.ma.jiang.community.provider.GitHubProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 @Controller
 public class AuthorizeController {
@@ -22,6 +25,10 @@ public class AuthorizeController {
     private String clientSecret;
     @Value("${github.redirect.url}")
     private String redirectUrl;
+
+    @Autowired
+    UserMapper userMapper;
+
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
@@ -33,8 +40,15 @@ public class AuthorizeController {
         tokenDTO.setRedirect_uri(redirectUrl);
         tokenDTO.setState(state);
         String accessToken = gitHubProvider.getAccessToken(tokenDTO);
-        GithubUserDTO user = gitHubProvider.getUser(accessToken);
-        if(user != null){
+        GithubUserDTO githubuser = gitHubProvider.getUser(accessToken);
+        if(githubuser != null){
+            User user = new User();
+            user.setAccountId(String.valueOf(githubuser.getId()));
+            user.setName(githubuser.getName());
+            user.setToken(UUID.randomUUID().toString()); // 以UUID的形式设置token
+            user.setGmtCreate(System.currentTimeMillis());
+            user.setGmtModified(user.getGmtCreate());
+            userMapper.insertUser(user);
             //登录成功 写cookie 和 session
             request.getSession().setAttribute("user",user);
             return  "redirect:/";//重定向到 index页面
