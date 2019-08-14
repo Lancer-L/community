@@ -55,6 +55,7 @@ public class AuthorizeController {
                 user.setToken(token); // 以UUID的形式设置token
                 user.setGmtCreate(System.currentTimeMillis());
                 user.setGmtModified(user.getGmtCreate());
+                user.setAvatarUrl(githubuser.getAvatar_url());
                 userMapper.insertUser(user);
             }else
                 token = user.getToken();

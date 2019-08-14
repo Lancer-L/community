@@ -16,6 +16,10 @@ ctrl + 向右箭头 移到最左边
 [flyway 学习](https://flywaydb.org/getstarted/firststeps/maven)
 
 [bootstrap 学习](https://v3.bootcss.com/css/)
+
+[lombok 学习](https://www.projectlombok.org/)
+
+[thymeleaf 学习](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#using-theach)
 ## 工具
 
 ##脚本

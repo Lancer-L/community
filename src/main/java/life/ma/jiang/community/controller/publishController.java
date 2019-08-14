@@ -2,7 +2,7 @@ package life.ma.jiang.community.controller;
 
 import life.ma.jiang.community.mapper.QuestionMapper;
 import life.ma.jiang.community.mapper.UserMapper;
-import life.ma.jiang.community.model.Qusetion;
+import life.ma.jiang.community.model.Question;
 import life.ma.jiang.community.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -67,7 +67,7 @@ public class publishController {
             model.addAttribute("error","用户未登录");
             return "publish";
         }else{
-            Qusetion question = new Qusetion();
+            Question question = new Question();
             question.setTitle(title);
             question.setDescription(description);
             question.setTag(tag);
