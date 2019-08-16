@@ -5,6 +5,7 @@ import life.ma.jiang.community.dto.GithubUserDTO;
 import life.ma.jiang.community.mapper.UserMapper;
 import life.ma.jiang.community.model.User;
 import life.ma.jiang.community.provider.GitHubProvider;
+import life.ma.jiang.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -29,7 +30,7 @@ public class AuthorizeController {
     private String redirectUrl;
 
     @Autowired
-    UserMapper userMapper;
+    UserService userService;
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
@@ -45,20 +46,16 @@ public class AuthorizeController {
         String accessToken = gitHubProvider.getAccessToken(tokenDTO);
         GithubUserDTO githubuser = gitHubProvider.getUser(accessToken);
         if(githubuser != null){
-            User user = userMapper.findUserByAccountId(String.valueOf(githubuser.getId()));
-            String token ="";
-            if(user==null){
-                token = UUID.randomUUID().toString();
-                user = new User();
-                user.setAccountId(String.valueOf(githubuser.getId()));
-                user.setName(githubuser.getName());
-                user.setToken(token); // 以UUID的形式设置token
-                user.setGmtCreate(System.currentTimeMillis());
-                user.setGmtModified(user.getGmtCreate());
-                user.setAvatarUrl(githubuser.getAvatar_url());
-                userMapper.insertUser(user);
-            }else
-                token = user.getToken();
+            String token = "";
+            token = UUID.randomUUID().toString();
+            User user = new User();
+            user.setAccountId(String.valueOf(githubuser.getId()));
+            user.setName(githubuser.getName());
+            user.setToken(token); // 以UUID的形式设置token
+            user.setGmtCreate(System.currentTimeMillis());
+            user.setGmtModified(user.getGmtCreate());
+            user.setAvatarUrl(githubuser.getAvatarUrl());
+            userService.createOrUpdateUser(user);
             //登录成功 写cookie 和 session
             //cookie 在 response 里面
             response.addCookie(new Cookie("token",token));

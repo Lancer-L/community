@@ -7,5 +7,5 @@ public class GithubUserDTO {
     private long id;
     private  String name;
     private  String bio;
-    private String avatar_url;
+    private String avatarUrl;
 }

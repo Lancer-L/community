@@ -39,6 +39,7 @@ public class GitHubProvider {
             String string = response.body().string();
             //快捷键 ctrl + alt + v
             GithubUserDTO githubUserDTO = JSON.parseObject(string, GithubUserDTO.class);// 将json转化为实体对象
+            // fastjson 可以利用驼峰命名法 即将avatar_url 转化为 avatarUrl
             return  githubUserDTO;
         } catch (IOException e) {
             e.printStackTrace();

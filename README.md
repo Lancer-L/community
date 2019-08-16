@@ -20,6 +20,10 @@ ctrl + 向右箭头 移到最左边
 [lombok 学习](https://www.projectlombok.org/)
 
 [thymeleaf 学习](https://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html#using-theach)
+
+[热部署](https://docs.spring.io/spring-boot/docs/2.1.7.RELEASE/reference/htmlsingle/spring-boot-devtools)
+
+[Spring MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html)
 ## 工具
 
 ##脚本

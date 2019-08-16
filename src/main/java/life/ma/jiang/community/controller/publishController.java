@@ -11,15 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class publishController {
     @Autowired
     private  QuestionMapper questionMapper;
-    @Autowired
-    private UserMapper userMapper;
     /*
     * ctrl + alt + o 是删掉不用的import
     *  */
@@ -51,18 +48,8 @@ public class publishController {
             model.addAttribute("error","标签必须填写");
             return "publish";
         }
-        Cookie[] cookies = request.getCookies();
-        User user = null;
-        if(cookies!=null){
-            for (Cookie cookie : cookies){
-                if(cookie.getName().equals("token")){
-                    user = userMapper.findByToken(cookie.getValue());
-                    break;
-                }
-            }
-            if(user!=null)
-                request.getSession().setAttribute("user",user);
-        }
+
+        User user = (User) request.getSession().getAttribute("user");
         if(user==null){
             model.addAttribute("error","用户未登录");
             return "publish";

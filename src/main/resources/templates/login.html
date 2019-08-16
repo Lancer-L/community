@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>码匠社区</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="/js/jquery-3.4.1.min.js" type="application/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <link rel="stylesheet" href="/css/community-login.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="/css/community.css"/>
+
+
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-ld-9 col-md-9 col-sm-12 col-xs-12" style="text-align: center">
+            <form class="form-horizontal col-ld-9 col-md-9 col-sm-12 col-xs-12" style="margin: 50px" action="/login" method="post">
+                <span class="heading">用户登录</span>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="name" id="inputEmail3" placeholder="请输入账户">
+                    <i class="fa fa-user"></i>
+                </div>
+                <div class="form-group help">
+                    <input type="password" name="pwd" class="form-control" id="inputPassword3" placeholder="密　码">
+                    <i class="fa fa-lock"></i>
+                    <a href="#" class="fa fa-question-circle"></a>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default">登录</button>
+                    &nbsp;&nbsp;
+                    <a href="/register">还没有账号 立刻去注册一个</a>
+                </div>
+                <div class="form-control" th:text="${info}" th:if="${info != null}"></div>
+            </form>
+        </div>
+        <div class="col-ld-3 col-md-3  col-sm-12 col-xs-12">
+            <h3>第三方登录</h3>
+            <div class="media">
+                <div class="media-left">
+                    <a href="#">
+                        <img class="media-object img-circle" src="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1565942109&di=99c5b1ffa92bd518354b74d44cf34a4e&src=http://ku.90sjimg.com/element_origin_min_pic/00/86/44/4056eb5f135855d.jpg" alt="头像">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h6 class="media-heading">
+                        <a href="https://github.com/login/oauth/authorize?client_id=bed81aa72a38edde9fbd&redirect_uri=http://localhost:8080/callback&scope=user&state=1">
+                            <span>github 登录</span>
+                        </a>
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
