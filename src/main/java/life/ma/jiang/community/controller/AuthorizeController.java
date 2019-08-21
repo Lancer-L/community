@@ -62,7 +62,7 @@ public class AuthorizeController {
             return  "redirect:/";//重定向到 index页面
         }else{
             //登录失败 重新登录
-            return  "redirect:/";
+            return  "redirect:/login";
         }
     }
 }

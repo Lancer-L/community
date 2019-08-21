@@ -24,6 +24,12 @@ ctrl + 向右箭头 移到最左边
 [热部署](https://docs.spring.io/spring-boot/docs/2.1.7.RELEASE/reference/htmlsingle/spring-boot-devtools)
 
 [Spring MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html)
+
+[mybatis generator 集成](http://www.mybatis.org/generator/reference)
+
+[postman](https://chrome.google.com/webstore/detail/coohjcphdfgbiolnekdpbcijmhambjff)
+
+[jquery](https://api.jquery.com/jQuery.post/)
 ## 工具
 
 ##脚本
@@ -57,4 +63,10 @@ create table question
 
 
 
+```
+```bash
+执行sql语句
+mvn flyway:migrate
+mybatis generate
+mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
 ```

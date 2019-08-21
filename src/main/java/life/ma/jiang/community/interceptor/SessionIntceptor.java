@@ -2,6 +2,7 @@ package life.ma.jiang.community.interceptor;
 
 import life.ma.jiang.community.mapper.UserMapper;
 import life.ma.jiang.community.model.User;
+import life.ma.jiang.community.model.UserExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Component
 public class SessionIntceptor implements HandlerInterceptor {
@@ -27,9 +29,11 @@ public class SessionIntceptor implements HandlerInterceptor {
                     break;
                 }
             }
-            User user = userMapper.findByToken(token);
-            if(user!=null) {
-                request.getSession().setAttribute("user", user);
+            UserExample userExample = new UserExample();
+            userExample.createCriteria().andTokenEqualTo(token);
+            List<User> users = userMapper.selectByExample(userExample);
+            if(users!=null && users.size() !=0) {
+                request.getSession().setAttribute("user", users.get(0));
             }
         }
         return true;

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+       <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin> <!--集成分页-->
+        <jdbcConnection driverClass="org.h2.Driver"
+                        connectionURL="jdbc:h2:~/community"
+                        userId="sa"
+                        password="123">
+        </jdbcConnection>
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+        <javaModelGenerator targetPackage="life.ma.jiang.community.model" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" /> <!--这个字段为true 表示设置上面的路径 如果没有的话就会自动创建一个 否则就不创建-->
+            <property name="trimStrings" value="true" /> <!---->
+        </javaModelGenerator>
+        <sqlMapGenerator targetPackage="mapper"  targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+        <javaClientGenerator type="XMLMAPPER" targetPackage="life.ma.jiang.community.mapper"  targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+        <table  tableName="user" domainObjectName="User" ><!--domainObjectName 是生成model的命名规范 这里一般指定为 表名大写-->
+        </table>
+        <table tableName="question" domainObjectName="Question"></table>
+        <table tableName="comment" domainObjectName="Comment"></table>
+    </context>
+</generatorConfiguration>

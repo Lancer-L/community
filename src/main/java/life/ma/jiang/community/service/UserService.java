@@ -2,9 +2,11 @@ package life.ma.jiang.community.service;
 
 import life.ma.jiang.community.mapper.UserMapper;
 import life.ma.jiang.community.model.User;
+import life.ma.jiang.community.model.UserExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -13,23 +15,23 @@ public class UserService {
     UserMapper userMapper;
 
     public void createOrUpdateUser(User user){
-        User dbuser = userMapper.findUserByAccountId(user.getAccountId());
+        UserExample userExample = new UserExample();
+        User dbuser = null;
+        if(user.getAccountId() != null && !user.getAccountId().equals("0")){
+            userExample.createCriteria().andAccountIdEqualTo(user.getAccountId().toString());
+        }else{
+            userExample.createCriteria().andPwdEqualTo(user.getPwd()).andNameEqualTo(user.getName());
+        }
+        List<User> users = userMapper.selectByExample(userExample);
+        if(users.size() >0)
+            dbuser = users.get(0);
         if(dbuser != null){
             user.setId(dbuser.getId());
             user.setGmtModified(System.currentTimeMillis());
-            userMapper.updateUserById(user);
+            userMapper.updateByPrimaryKey(user);
         }else
-            userMapper.insertUser(user);
+            userMapper.insert(user);
     }
-
-    public User findUserByToken(String token){
-        return  userMapper.findByToken(token);
-    }
-    public  User findUserByAccountId(String id){
-        return  userMapper.findUserByAccountId(id);
-    }
-
-
     public void createUser(String name, String pwd, String bio) {
         User user = new User();
         user.setGmtCreate(System.currentTimeMillis());
@@ -39,11 +41,13 @@ public class UserService {
         user.setBio(bio);
         user.setPwd(pwd);
         user.setAvatarUrl("https://avatars2.githubusercontent.com/u/53986967?v=4");
-        userMapper.insertUser(user);
+       userMapper.insert(user);
     }
 
     public User checkLogin(String name, String pwd) {
-        User user = userMapper.findUserByNameAndPwd(name,pwd);
-        return user;
+        UserExample example = new UserExample();
+        example.createCriteria().andNameEqualTo(name).andPwdEqualTo(pwd);
+        List<User> users = userMapper.selectByExample(example);
+        return  users == null || users.size()==0 ? null : users.get(0);
     }
 }

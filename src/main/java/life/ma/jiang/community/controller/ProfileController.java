@@ -26,7 +26,7 @@ public class ProfileController {
                            HttpServletRequest request){
         User user = (User)request.getSession().getAttribute("user");
         if(user == null)
-            return "redirect:/";
+            return "redirect:/login";
         if(action.equals("questions")){
             model.addAttribute("section","questions");
             model.addAttribute("sectionName","我的提问");
